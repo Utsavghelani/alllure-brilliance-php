@@ -109,14 +109,14 @@ $totalPages = ceil($totalProducts / $limit);
             <div class="container">
                 <div class="tf-shop-control grid-3 align-items-center">
                     <div class="tf-control-filter">
-                        <a href="#filterShop" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
+                        <!-- <a href="#filterShop" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
                             class="tf-btn-filter"><span class="icon icon-filter"></span><span
-                                class="text">Filter</span></a>
+                                class="text">Filter</span></a> -->
                     </div>
                     <ul class="tf-control-layout d-flex justify-content-center">
-                        <li class="tf-view-layout-switch sw-layout-list list-layout" data-value-layout="list">
+                        <!-- <li class="tf-view-layout-switch sw-layout-list list-layout" data-value-layout="list">
                             <div class="item"><span class="icon icon-list"></span></div>
-                        </li>
+                        </li> -->
                         <li class="tf-view-layout-switch sw-layout-2" data-value-layout="tf-col-2">
                             <div class="item"><span class="icon icon-grid-2"></span></div>
                         </li>
@@ -133,7 +133,10 @@ $totalPages = ceil($totalProducts / $limit);
                             <div class="item"><span class="icon icon-grid-6"></span></div>
                         </li>
                     </ul>
-                    <div class="tf-control-sorting d-flex justify-content-end">
+
+
+
+                    <!-- <div class="tf-control-sorting d-flex justify-content-end">
                         <div class="tf-dropdown-sort" data-bs-toggle="dropdown">
                             <div class="btn-select">
                                 <span class="text-sort-value">Featured</span>
@@ -148,7 +151,10 @@ $totalPages = ceil($totalProducts / $limit);
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
+
+
+
                 </div>
                 <div class="wrapper-control-shop">
                     <div class="meta-filter-shop">
@@ -162,6 +168,31 @@ $totalPages = ceil($totalProducts / $limit);
 <?php
 // Fetch all products
 $productQuery = mysqli_query($conn, "SELECT * FROM products WHERE category_id = 1 LIMIT $limit OFFSET $offset");
+
+// ---------------- PRICE FILTER LOGIC ---------------- //
+
+// Start base WHERE clause (you can change category_id as needed)
+$whereClause = "WHERE category_id = 1";
+
+// If min & max price are set via GET, filter products
+if (!empty($_GET['min_price']) && !empty($_GET['max_price'])) {
+    $min = (float) $_GET['min_price'];
+    $max = (float) $_GET['max_price'];
+
+    $whereClause .= " AND id IN (
+        SELECT product_id 
+        FROM product_prices_1 
+        WHERE price BETWEEN $min AND $max
+    )";
+}
+
+// Fetch products with or without price filter
+$productQuery = mysqli_query($conn, "SELECT * FROM products $whereClause");
+
+
+
+
+
 
 while ($product = mysqli_fetch_array($productQuery)) {
     $product_id = $product['id'];
@@ -183,9 +214,24 @@ while ($product = mysqli_fetch_array($productQuery)) {
         } else {
             $images[$material] = ''; // fallback or blank
         }
+
+        $priceQuery = mysqli_query($conn, "
+                SELECT price FROM product_prices_1 
+                WHERE product_id = $product_id AND material = '$material'
+                LIMIT 1
+            ");
+            $prices[$material] = ($priceRow = mysqli_fetch_assoc($priceQuery)) ? $priceRow['price'] : '';
+            
+
+
     }
+
+
+
+
 ?>
     <div class="card-product grid">
+        
         <div class="card-product-wrapper">
             <a href="try_3.php?product_id=<?= $product_id ?>" class="product-img">
                 <!-- Default image: Gold -->
@@ -204,6 +250,10 @@ while ($product = mysqli_fetch_array($productQuery)) {
                          alt="Silver Image">
                 <?php endif; ?>
             </a>
+        </div>
+        <div class="product-price" id="price-<?= $product_id ?>" 
+                    style="font-size:18px; font-weight:bold; color:#d4af37; margin-top:10px;">
+                    ₹<?= htmlspecialchars($prices['Gold']) ?>
         </div>
         <div class="card-product-info">
             <a href="try_3.php?product_id=<?= $product_id ?>" class="title link">
@@ -391,6 +441,9 @@ while ($product = mysqli_fetch_array($productQuery)) {
                         
                         
                     </div>
+
+
+                    <form action="Rings.php" method="GET" id="facet-filter-form" class="facet-filter-form">
                     <div class="widget-facet">
                         <div class="facet-title" data-bs-target="#price" data-bs-toggle="collapse" aria-expanded="true"
                             aria-controls="price">
@@ -409,9 +462,17 @@ while ($product = mysqli_fetch_array($productQuery)) {
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
+
+                    
+                    <input type="hidden" name="min_price" id="min_price">
+                    <input type="hidden" name="max_price" id="max_price">
+
+                    <button type="submit" style="margin-top:10px;">Apply Filter</button>
+                </form>
+                    
+                    
                     <div class="widget-facet">
                         <div class="facet-title" data-bs-target="#color" data-bs-toggle="collapse" aria-expanded="true"
                             aria-controls="color">
@@ -556,6 +617,34 @@ while ($product = mysqli_fetch_array($productQuery)) {
         </div>
     </div>
     <!-- /modal quick_add -->
+
+
+
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Example: Assuming your slider is jQuery UI range slider
+    $("#price-value-range").slider({
+        range: true,
+        min: 0,
+        max: 500,
+        values: [0, 500],
+        slide: function(event, ui) {
+            // Update visible values
+            $("#price-min-value").text("$" + ui.values[0]);
+            $("#price-max-value").text("$" + ui.values[1]);
+
+            // Update hidden inputs
+            $("#min_price").val(ui.values[0]);
+            $("#max_price").val(ui.values[1]);
+        }
+    });
+
+    // Set initial values in hidden inputs
+    let initValues = $("#price-value-range").slider("values");
+    $("#min_price").val(initValues[0]);
+    $("#max_price").val(initValues[1]);
+});
+</script>
         
 
 <?php

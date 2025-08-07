@@ -3,23 +3,35 @@ include('header.php');
 include('conn.php');
 ?>
 
+<?php
+$limit = 12; // Products per page
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? intval($_GET['page']) : 1;
+$offset = ($page - 1) * $limit;
+
+// Count total products for pagination
+$totalProductsResult = mysqli_query($conn, "SELECT COUNT(*) as total FROM products WHERE category_id = 3");
+$totalProductsRow = mysqli_fetch_assoc($totalProductsResult);
+$totalProducts = $totalProductsRow['total'];
+$totalPages = ceil($totalProducts / $limit);
+?>
  <!-- page-title -->
-        <div class="tf-page-title">
+        <!-- <div class="tf-page-title">
             <div class="container-full">
                 <div class="heading text-center">New Arrival</div>
                 <p class="text-center text-2 text_black-2 mt_5">Shop through our latest selection of Fashion</p>
             </div>
-        </div>
+        </div> -->
 <!-- /page-title -->
 
 <!-- Collection -->
-        <section class="flat-spacing-3 pb_0">
+        <!-- <section class="flat-spacing-3 pb_0">
             <div class="container">
                 <div class="hover-sw-nav">
                     <div dir="ltr" class="swiper tf-sw-collection" data-preview="5" data-tablet="3" data-mobile="2"
                         data-space-lg="30" data-space-md="30" data-space="15" data-loop="false" data-auto-play="false">
                         <div class="swiper-wrapper">
                             <div class="swiper-slide" lazy="true">
+                                
                                 <div class="collection-item style-2 hover-img">
                                     <div class="collection-inner">
                                         <a href="shop-default.html" class="collection-image img-style">
@@ -43,7 +55,53 @@ include('conn.php');
                     <div class="sw-dots style-2 sw-pagination-collection justify-content-center"></div>
                 </div>
             </div>
-        </section>
+        </section> -->
+
+
+        <!-- <section class="flat-spacing-3 pb_0">
+    <div class="container">
+        <div class="hover-sw-nav">
+            <div dir="ltr" class="swiper tf-sw-collection" data-preview="5" data-tablet="3" data-mobile="2"
+                data-space-lg="30" data-space-md="30" data-space="15" data-loop="false" data-auto-play="false">
+                <div class="swiper-wrapper">
+
+                    <?php
+                    // Step 2: Fetch categories from database
+                    $query = mysqli_query($conn, "SELECT * FROM categories ORDER BY id ASC");
+                    while ($row = mysqli_fetch_assoc($query)) {
+                        $categoryId = $row['id'];
+                        $categoryName = htmlspecialchars($row['name']);
+                        $categoryImage = $row['image_path']; // example: images/collections/collection-14.jpg
+                    ?>
+                        <div class="swiper-slide" lazy="true">
+                            <div class="collection-item style-2 hover-img">
+                                <div class="collection-inner">
+                                    <a href="shop-default.php?category=<?= $categoryId ?>" class="collection-image img-style">
+                                        <img class="lazyload" data-src="<?= $categoryImage ?>" src="<?= $categoryImage ?>" alt="<?= $categoryName ?>">
+                                    </a>
+                                    <div class="collection-content">
+                                        <a href="Shop-default.php?category=<?= $categoryId ?>" class="tf-btn collection-title hover-icon fs-15">
+                                            <span><?= $categoryName ?></span>
+                                            <i class="icon icon-arrow1-top-left"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php } ?>
+
+                </div>
+            </div>
+            <div class="nav-sw nav-next-slider nav-next-collection box-icon w_46 round">
+                <span class="icon icon-arrow-left"></span>
+            </div>
+            <div class="nav-sw nav-prev-slider nav-prev-collection box-icon w_46 round">
+                <span class="icon icon-arrow-right"></span>
+            </div>
+            <div class="sw-dots style-2 sw-pagination-collection justify-content-center"></div>
+        </div>
+    </div>
+</section> -->
         <!-- /Collection -->
 
         <!-- Section Product -->
@@ -51,14 +109,14 @@ include('conn.php');
             <div class="container">
                 <div class="tf-shop-control grid-3 align-items-center">
                     <div class="tf-control-filter">
-                        <a href="#filterShop" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
+                        <!-- <a href="#filterShop" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
                             class="tf-btn-filter"><span class="icon icon-filter"></span><span
-                                class="text">Filter</span></a>
+                                class="text">Filter</span></a> -->
                     </div>
                     <ul class="tf-control-layout d-flex justify-content-center">
-                        <li class="tf-view-layout-switch sw-layout-list list-layout" data-value-layout="list">
+                        <!-- <li class="tf-view-layout-switch sw-layout-list list-layout" data-value-layout="list">
                             <div class="item"><span class="icon icon-list"></span></div>
-                        </li>
+                        </li> -->
                         <li class="tf-view-layout-switch sw-layout-2" data-value-layout="tf-col-2">
                             <div class="item"><span class="icon icon-grid-2"></span></div>
                         </li>
@@ -75,7 +133,10 @@ include('conn.php');
                             <div class="item"><span class="icon icon-grid-6"></span></div>
                         </li>
                     </ul>
-                    <div class="tf-control-sorting d-flex justify-content-end">
+
+
+
+                    <!-- <div class="tf-control-sorting d-flex justify-content-end">
                         <div class="tf-dropdown-sort" data-bs-toggle="dropdown">
                             <div class="btn-select">
                                 <span class="text-sort-value">Featured</span>
@@ -90,7 +151,10 @@ include('conn.php');
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
+
+
+
                 </div>
                 <div class="wrapper-control-shop">
                     <div class="meta-filter-shop">
@@ -103,7 +167,32 @@ include('conn.php');
                     <div class="tf-grid-layout wrapper-shop tf-col-3" id="gridLayout">
 <?php
 // Fetch all products
-$productQuery = mysqli_query($conn, "SELECT * FROM products WHERE category_id = 1");
+$productQuery = mysqli_query($conn, "SELECT * FROM products WHERE category_id = 3 LIMIT $limit OFFSET $offset");
+
+// ---------------- PRICE FILTER LOGIC ---------------- //
+
+// Start base WHERE clause (you can change category_id as needed)
+$whereClause = "WHERE category_id = 3";
+
+// If min & max price are set via GET, filter products
+if (!empty($_GET['min_price']) && !empty($_GET['max_price'])) {
+    $min = (float) $_GET['min_price'];
+    $max = (float) $_GET['max_price'];
+
+    $whereClause .= " AND id IN (
+        SELECT product_id 
+        FROM product_prices_1 
+        WHERE price BETWEEN $min AND $max
+    )";
+}
+
+// Fetch products with or without price filter
+$productQuery = mysqli_query($conn, "SELECT * FROM products $whereClause");
+
+
+
+
+
 
 while ($product = mysqli_fetch_array($productQuery)) {
     $product_id = $product['id'];
@@ -125,11 +214,26 @@ while ($product = mysqli_fetch_array($productQuery)) {
         } else {
             $images[$material] = ''; // fallback or blank
         }
+
+        $priceQuery = mysqli_query($conn, "
+                SELECT price FROM product_prices_1 
+                WHERE product_id = $product_id AND material = '$material'
+                LIMIT 1
+            ");
+            $prices[$material] = ($priceRow = mysqli_fetch_assoc($priceQuery)) ? $priceRow['price'] : '';
+            
+
+
     }
+
+
+
+
 ?>
     <div class="card-product grid">
+        
         <div class="card-product-wrapper">
-            <a href="product-detail.php?id=<?= $product_id ?>" class="product-img">
+            <a href="try_3.php?product_id=<?= $product_id ?>" class="product-img">
                 <!-- Default image: Gold -->
                 <?php if (!empty($images['Gold'])): ?>
                     <img class="lazyload img-product"
@@ -147,8 +251,12 @@ while ($product = mysqli_fetch_array($productQuery)) {
                 <?php endif; ?>
             </a>
         </div>
+        <div class="product-price" id="price-<?= $product_id ?>" 
+                    style="font-size:18px; font-weight:bold; color:#d4af37; margin-top:10px;">
+                    ₹<?= htmlspecialchars($prices['Gold']) ?>
+        </div>
         <div class="card-product-info">
-            <a href="product-detail.php?id=<?= $product_id ?>" class="title link">
+            <a href="try_3.php?product_id=<?= $product_id ?>" class="title link">
                 <?= htmlspecialchars($product_name) ?>
             </a>
 
@@ -174,7 +282,19 @@ while ($product = mysqli_fetch_array($productQuery)) {
 
 
 </div>
+<div class="pagination mt-4 text-center">
+                <?php if ($page > 1): ?>
+                    <a href="?page=<?= $page - 1 ?>" class="btn btn-outline-dark me-2">&laquo; Prev</a>
+                <?php endif; ?>
 
+                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                    <a href="?page=<?= $i ?>" class="btn <?= ($i == $page) ? 'btn-dark' : 'btn-outline-dark' ?> mx-1"><?= $i ?></a>
+                <?php endfor; ?>
+
+                <?php if ($page < $totalPages): ?>
+                    <a href="?page=<?= $page + 1 ?>" class="btn btn-outline-dark ms-2">Next &raquo;</a>
+                <?php endif; ?>
+            </div>
                          
                         
                     </div>
@@ -208,6 +328,7 @@ while ($product = mysqli_fetch_array($productQuery)) {
     </div>
     <!-- /toolbar-bottom -->
 
+   
     <!-- modalDemo -->
     <div class="modal fade modalDemo" id="modalDemo">
         <div class="modal-dialog modal-dialog-centered">
@@ -320,6 +441,9 @@ while ($product = mysqli_fetch_array($productQuery)) {
                         
                         
                     </div>
+
+
+                    <form action="Rings.php" method="GET" id="facet-filter-form" class="facet-filter-form">
                     <div class="widget-facet">
                         <div class="facet-title" data-bs-target="#price" data-bs-toggle="collapse" aria-expanded="true"
                             aria-controls="price">
@@ -338,9 +462,17 @@ while ($product = mysqli_fetch_array($productQuery)) {
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </div>
+
+                    
+                    <input type="hidden" name="min_price" id="min_price">
+                    <input type="hidden" name="max_price" id="max_price">
+
+                    <button type="submit" style="margin-top:10px;">Apply Filter</button>
+                </form>
+                    
+                    
                     <div class="widget-facet">
                         <div class="facet-title" data-bs-target="#color" data-bs-toggle="collapse" aria-expanded="true"
                             aria-controls="color">
@@ -485,6 +617,34 @@ while ($product = mysqli_fetch_array($productQuery)) {
         </div>
     </div>
     <!-- /modal quick_add -->
+
+
+
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Example: Assuming your slider is jQuery UI range slider
+    $("#price-value-range").slider({
+        range: true,
+        min: 0,
+        max: 500,
+        values: [0, 500],
+        slide: function(event, ui) {
+            // Update visible values
+            $("#price-min-value").text("$" + ui.values[0]);
+            $("#price-max-value").text("$" + ui.values[1]);
+
+            // Update hidden inputs
+            $("#min_price").val(ui.values[0]);
+            $("#max_price").val(ui.values[1]);
+        }
+    });
+
+    // Set initial values in hidden inputs
+    let initValues = $("#price-value-range").slider("values");
+    $("#min_price").val(initValues[0]);
+    $("#max_price").val(initValues[1]);
+});
+</script>
         
 
 <?php

@@ -5,14 +5,12 @@ include('header.php');
         <!-- Slider -->
         <section class="tf-slideshow about-us-page position-relative">
             <div class="banner-wrapper">
-                <img class="lazyload" src="images/slider/about-banner-01.jpg"
-                    data-src="images/slider/about-banner-01.jpg" alt="image-collection">
-                <div class="box-content text-center">
-                    <div class="container">
-                        <div class="text text-white">Empowering women to achieve <br class="d-xl-block d-none"> fitness
-                            goals with style</div>
-                    </div>
-                </div>
+                <video autoplay muted loop playsinline preload="auto" 
+       style="width:100%; height:auto; display:block;">
+    <source src="images/video/Video.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+                
             </div>
         </section>
         <!-- /Slider -->
@@ -41,8 +39,8 @@ include('header.php');
             <div class="container">
                 <div class="tf-grid-layout md-col-2 tf-img-with-text style-4">
                     <div class="tf-image-wrap">
-                        <img class="lazyload w-100" data-src="images/collections/collection-69.jpg"
-                            src="images/collections/collection-69.jpg" alt="collection-img">
+                        <img class="lazyload w-100" data-src="images/collections/collection-69.png"
+                            src="images/collections/collection-69.png" alt="collection-img">
                     </div>
                     <div class="tf-content-wrap px-0 d-flex justify-content-center w-100">
                         <div>
@@ -87,14 +85,14 @@ include('header.php');
                     <div class="grid-img-group">
                         <div class="tf-image-wrap box-img item-1">
                             <div class="img-style">
-                                <img class="lazyload" src="images/collections/collection-71.jpg"
-                                    data-src="images/collections/collection-71.jpg" alt="img-slider">
+                                <img class="lazyload" src="images/collections/collection-71.png"
+                                    data-src="images/collections/collection-71.png" alt="img-slider">
                             </div>
                         </div>
                         <div class="tf-image-wrap box-img item-2">
                             <div class="img-style">
-                                <img class="lazyload" src="images/collections/collection-70.jpg"
-                                    data-src="images/collections/collection-70.jpg" alt="img-slider">
+                                <img class="lazyload" src="images/collections/collection-70.png"
+                                    data-src="images/collections/collection-70.png" alt="img-slider">
                             </div>
                         </div>
                     </div>
@@ -281,40 +279,40 @@ include('header.php');
                             <div class="swiper-slide">
                                 <div class="gallery-item hover-img">
                                     <div class="img-style">
-                                        <img class="lazyload img-hover" data-src="images/shop/gallery/gallery-7.jpg"
-                                            src="images/shop/gallery/gallery-7.jpg" alt="image-gallery">
+                                        <img class="lazyload img-hover" data-src="images/shop/gallery/gallery-7.png"
+                                            src="images/shop/gallery/gallery-7.png" alt="image-gallery">
                                     </div>
                                 </div>
                             </div>
                             <div class="swiper-slide">
                                 <div class="gallery-item hover-img">
                                     <div class="img-style">
-                                        <img class="lazyload img-hover" data-src="images/shop/gallery/gallery-3.jpg"
-                                            src="images/shop/gallery/gallery-3.jpg" alt="image-gallery">
+                                        <img class="lazyload img-hover" data-src="images/shop/gallery/gallery-3.png"
+                                            src="images/shop/gallery/gallery-3.png" alt="image-gallery">
                                     </div>
                                 </div>
                             </div>
                             <div class="swiper-slide">
                                 <div class="gallery-item hover-img">
                                     <div class="img-style">
-                                        <img class="lazyload img-hover" data-src="images/shop/gallery/gallery-5.jpg"
-                                            src="images/shop/gallery/gallery-5.jpg" alt="image-gallery">
+                                        <img class="lazyload img-hover" data-src="images/shop/gallery/gallery-5.png"
+                                            src="images/shop/gallery/gallery-5.png" alt="image-gallery">
                                     </div>
                                 </div>
                             </div>
                             <div class="swiper-slide">
                                 <div class="gallery-item hover-img">
                                     <div class="img-style">
-                                        <img class="lazyload img-hover" data-src="images/shop/gallery/gallery-8.jpg"
-                                            src="images/shop/gallery/gallery-8.jpg" alt="image-gallery">
+                                        <img class="lazyload img-hover" data-src="images/shop/gallery/gallery-8.png"
+                                            src="images/shop/gallery/gallery-8.png" alt="image-gallery">
                                     </div>
                                 </div>
                             </div>
                             <div class="swiper-slide">
                                 <div class="gallery-item hover-img">
                                     <div class="img-style">
-                                        <img class="lazyload img-hover" data-src="images/shop/gallery/gallery-6.jpg"
-                                            src="images/shop/gallery/gallery-6.jpg" alt="image-gallery">
+                                        <img class="lazyload img-hover" data-src="images/shop/gallery/gallery-6.png"
+                                            src="images/shop/gallery/gallery-6.png" alt="image-gallery">
                                     </div>
                                 </div>
                             </div>

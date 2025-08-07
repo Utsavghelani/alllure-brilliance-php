@@ -363,52 +363,102 @@ if (isset($_GET['product_id']) && is_numeric($_GET['product_id'])) {
 
         <!-- product -->
         <section class="flat-spacing-1 pt_0">
-            <div class="container">
-                <div class="flat-title">
-                    <span class="title">People Also Bought</span>
-                </div>
-                <div class="hover-sw-nav hover-sw-2">
-                    <div dir="ltr" class="swiper tf-sw-product-sell wrap-sw-over" data-preview="4" data-tablet="3"
-                        data-mobile="2" data-space-lg="30" data-space-md="15" data-pagination="2" data-pagination-md="3"
-                        data-pagination-lg="3">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide" lazy="true">
-                                <div class="card-product">
-                                    <div class="card-product-wrapper">
-                                        <a href="product-detail.html" class="product-img">
-                                            <img class="lazyload img-product" data-src="images/products/orange-1.jpg"
-                                                src="images/products/orange-1.jpg" alt="image-product">
-                                            <img class="lazyload img-hover" data-src="images/products/white-1.jpg"
-                                                src="images/products/white-1.jpg" alt="image-product">
-                                        </a>
-                                        
-                                        
-                                    </div>
-                                    <div class="card-product-info">
-                                        <a href="product-detail.html" class="title link">Ribbed Tank Top</a>
-                                        <span class="price">$16.95</span>
-                                        <ul class="list-color-product">
-                                            <li class="list-color-item color-swatch active">
-                                                <span class="tooltip">Orange</span>
-                                                <span class="swatch-value bg_orange-3"></span>
-                                                <img class="lazyload" data-src="images/products/orange-1.jpg"
-                                                    src="images/products/orange-1.jpg" alt="image-product">
-                                            </li>
-                                            
-                                        </ul>
-                                    </div>
+    <div class="container">
+        <div class="flat-title">
+            <span class="title">People Also Bought</span>
+        </div>
+        <div class="hover-sw-nav hover-sw-2">
+            <div dir="ltr" class="swiper tf-sw-product-sell wrap-sw-over" 
+                 data-preview="4" data-tablet="3" data-mobile="2" 
+                 data-space-lg="30" data-space-md="15" 
+                 data-pagination="2" data-pagination-md="3" data-pagination-lg="3">
+                <div class="swiper-wrapper">
+                    <?php
+                    // Fetch 6 random products
+                    $productQuery = mysqli_query($conn, "SELECT * FROM products ORDER BY RAND() LIMIT 6");
+
+                    while ($product = mysqli_fetch_array($productQuery)) {
+                        $product_id = $product['id'];
+                        $product_name = $product['name'];
+
+                        $materials = ['Gold', 'Silver', 'Platinum'];
+                        $images = [];
+                        $prices = [];
+
+                        foreach ($materials as $material) {
+                            // Fetch first image for each material
+                            $photoQuery = mysqli_query($conn, "
+                                SELECT image_path FROM product_photos 
+                                WHERE product_id = $product_id AND photo_type = '$material'
+                                LIMIT 1
+                            ");
+                            $images[$material] = ($photo = mysqli_fetch_assoc($photoQuery)) ? $photo['image_path'] : '';
+
+                            // Fetch price for each material
+                            $priceQuery = mysqli_query($conn, "
+                                SELECT price FROM product_prices_1 
+                                WHERE product_id = $product_id AND material = '$material'
+                                LIMIT 1
+                            ");
+                            $prices[$material] = ($priceRow = mysqli_fetch_assoc($priceQuery)) ? $priceRow['price'] : '';
+                        }
+                    ?>
+                        <div class="swiper-slide">
+                            <div class="card-product style-brown">
+                                <div class="card-product-wrapper rounded-0">
+                                    <a href="product-detail.php?id=<?= $product_id ?>" class="product-img">
+                                        <?php if (!empty($images['Gold'])): ?>
+                                            <img class="lazyload img-product"
+                                                 data-src="<?= htmlspecialchars($images['Gold']) ?>"
+                                                 src="<?= htmlspecialchars($images['Gold']) ?>"
+                                                 alt="Gold Image">
+                                        <?php endif; ?>
+
+                                        <?php if (!empty($images['Silver'])): ?>
+                                            <img class="lazyload img-hover"
+                                                 data-src="<?= htmlspecialchars($images['Silver']) ?>"
+                                                 src="<?= htmlspecialchars($images['Silver']) ?>"
+                                                 alt="Silver Image">
+                                        <?php endif; ?>
+                                    </a>
+                                </div>
+                                <div class="card-product-info" data-direction="horizontal">
+                                    <span class="price" style="font-size:16px; font-weight:bold; color:#d4af37;">
+                                        ₹<?= htmlspecialchars($prices['Gold'] ?: $prices['Silver'] ?: $prices['Platinum'] ?: '0.00') ?>
+                                    </span>
+                                    <a href="product-detail.php?id=<?= $product_id ?>" class="title link">
+                                        <?= htmlspecialchars($product_name) ?>
+                                    </a>
+                                    <ul class="list-color-product">
+                                        <?php foreach ($materials as $material): ?>
+                                            <?php if (!empty($images[$material])): ?>
+                                                <li class="list-color-item color-swatch">
+                                                    <span class="tooltip"><?= $material ?></span>
+                                                    <span class="swatch-value bg_<?= strtolower($material) ?>"></span>
+                                                    <img class="lazyload"
+                                                         data-src="<?= htmlspecialchars($images[$material]) ?>"
+                                                         src="<?= htmlspecialchars($images[$material]) ?>"
+                                                         alt="<?= $material ?> Image">
+                                                </li>
+                                            <?php endif; ?>
+                                        <?php endforeach; ?>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="nav-sw nav-next-slider nav-next-product box-icon w_46 round"><span
-                            class="icon icon-arrow-left"></span></div>
-                    <div class="nav-sw nav-prev-slider nav-prev-product box-icon w_46 round"><span
-                            class="icon icon-arrow-right"></span></div>
-                    <div class="sw-dots style-2 sw-pagination-product justify-content-center"></div>
+                    <?php } ?>
                 </div>
             </div>
-        </section>
+            <div class="nav-sw nav-next-slider nav-next-product box-icon w_46 round">
+                <span class="icon icon-arrow-left"></span>
+            </div>
+            <div class="nav-sw nav-prev-slider nav-prev-product box-icon w_46 round">
+                <span class="icon icon-arrow-right"></span>
+            </div>
+            <div class="sw-dots style-2 sw-pagination-product justify-content-center"></div>
+        </div>
+    </div>
+</section>
         
 <?php
 

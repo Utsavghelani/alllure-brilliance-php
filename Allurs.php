@@ -3,47 +3,8 @@ include('header.php');
 include('conn.php');
 ?>
 
- <!-- page-title -->
-        <div class="tf-page-title">
-            <div class="container-full">
-                <div class="heading text-center">New Arrival</div>
-                <p class="text-center text-2 text_black-2 mt_5">Shop through our latest selection of Fashion</p>
-            </div>
-        </div>
-<!-- /page-title -->
-
 <!-- Collection -->
-        <section class="flat-spacing-3 pb_0">
-            <div class="container">
-                <div class="hover-sw-nav">
-                    <div dir="ltr" class="swiper tf-sw-collection" data-preview="5" data-tablet="3" data-mobile="2"
-                        data-space-lg="30" data-space-md="30" data-space="15" data-loop="false" data-auto-play="false">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide" lazy="true">
-                                <div class="collection-item style-2 hover-img">
-                                    <div class="collection-inner">
-                                        <a href="shop-default.html" class="collection-image img-style">
-                                            <img class="lazyload" data-src="images/collections/collection-14.jpg"
-                                                src="images/collections/collection-14.jpg" alt="collection-img">
-                                        </a>
-                                        <div class="collection-content">
-                                            <a href="shop-default.html"
-                                                class="tf-btn collection-title hover-icon fs-15"><span>Accessories</span><i
-                                                    class="icon icon-arrow1-top-left"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="nav-sw nav-next-slider nav-next-collection box-icon w_46 round"><span
-                            class="icon icon-arrow-left"></span></div>
-                    <div class="nav-sw nav-prev-slider nav-prev-collection box-icon w_46 round"><span
-                            class="icon icon-arrow-right"></span></div>
-                    <div class="sw-dots style-2 sw-pagination-collection justify-content-center"></div>
-                </div>
-            </div>
-        </section>
+        
         <!-- /Collection -->
 
         <!-- Section Product -->
@@ -103,7 +64,7 @@ include('conn.php');
                     <div class="tf-grid-layout wrapper-shop tf-col-3" id="gridLayout">
 <?php
 // Fetch all products
-$productQuery = mysqli_query($conn, "SELECT * FROM products WHERE category_id = 1");
+$productQuery = mysqli_query($conn, "SELECT * FROM products ");
 
 while ($product = mysqli_fetch_array($productQuery)) {
     $product_id = $product['id'];

@@ -82,7 +82,7 @@
                     <div class="col-xl-9 col-md-4 col-6">
                         <div class="wrap-header-left">
                             <a href="index.php" class="logo-header">
-                                <img src="images/logo/logo.svg" alt="logo" class="logo">
+                                <img src="images/logo/logo.png" alt="logo" class="logo">
                             </a>
                             <nav class="box-navigation text-center">
                                 <ul class="box-nav-ul d-flex align-items-center justify-content-center gap-30">

@@ -18,7 +18,7 @@ include('conn.php');
                                     <h1 class="fade-item fade-item-1 text-white heading font-poppins fw-8">SUMMER
                                         ESSENTIALS</h1>
                                     <div class="fade-item fade-item-2">
-                                        <a href="shop-collection-list.html"
+                                        <a href="Rings.php"
                                             class="font-poppins tf-btn btn-outline-light rounded-0 fw-6 fs-14 link justify-content-center letter-spacing-2 wow fadeInUp"
                                             data-wow-delay="0s">SHOP NOW</a>
                                     </div>
@@ -35,7 +35,7 @@ include('conn.php');
                                     <h1 class="fade-item fade-item-1 text-white heading font-poppins fw-8">SPRING
                                         ESSENTIALS</h1>
                                     <div class="fade-item fade-item-2">
-                                        <a href="shop-collection-list.html"
+                                        <a href="Necklace.php"
                                             class="font-poppins tf-btn btn-outline-light rounded-0 fw-6 fs-14 link justify-content-center letter-spacing-2 wow fadeInUp"
                                             data-wow-delay="0s">SHOP NOW</a>
                                     </div>
@@ -52,7 +52,7 @@ include('conn.php');
                                     <h1 class="fade-item fade-item-1 text-white heading font-poppins fw-8">WINTER
                                         ESSENTIALS</h1>
                                     <div class="fade-item fade-item-2">
-                                        <a href="shop-collection-list.html"
+                                        <a href="Allurs.php"
                                             class="font-poppins tf-btn btn-outline-light rounded-0 fw-6 fs-14 link justify-content-center letter-spacing-2 wow fadeInUp"
                                             data-wow-delay="0s">SHOP NOW</a>
                                     </div>
@@ -96,7 +96,7 @@ include('conn.php');
                         </li>
                         <li class="nav-tab-item" role="presentation">
                             <div data-bs-target="#cardigans" class="nav-tab-link" data-bs-toggle="tab">
-                                <span class="text fw-8 font-poppins">Allur's Collection<span class="count"></span></span>
+                                <span class="text fw-8 font-poppins">Allure's Collection<span class="count"></span></span>
                                 <a href="Allurs.php" class="icon icon-arrow1-top-left"></a>
                             </div>
                         </li>
@@ -122,20 +122,20 @@ include('conn.php');
                         </div>
                         <div class="tab-pane" id="shirtsBlouses" role="tabpanel">
                             <a href="Necklace.php" class="fullwidth o-hidden">
-                                <img class="lazyload" data-src="images/collections/jewerly-3.jpg"
-                                    src="images/collections/jewerly-3.jpg" alt="image-shop">
+                                <img class="lazyload" data-src="images/collections/jewerly-3.png"
+                                    src="images/collections/jewerly-3.png" alt="image-shop">
                             </a>
                         </div>
                         <div class="tab-pane" id="pants" role="tabpanel">
                             <a href="Bracelets.php" class="fullwidth o-hidden">
-                                <img class="lazyload" data-src="images/collections/jewerly-4.jpg"
-                                    src="images/collections/jewerly-4.jpg" alt="image-shop">
+                                <img class="lazyload" data-src="images/collections/jewerly-4.png"
+                                    src="images/collections/jewerly-4.png" alt="image-shop">
                             </a>
                         </div>
                         <div class="tab-pane" id="cardigans" role="tabpanel">
                             <a href="Allurs.php" class="fullwidth o-hidden">
-                                <img class="lazyload" data-src="images/collections/jewerly-5.jpg"
-                                    src="images/collections/jewerly-5.jpg" alt="image-shop">
+                                <img class="lazyload" data-src="images/collections/jewerly-5.png"
+                                    src="images/collections/jewerly-5.png" alt="image-shop">
                             </a>
                         </div>
                        
@@ -186,6 +186,14 @@ include('conn.php');
                 ");
 
                 $images[$material] = ($photo = mysqli_fetch_assoc($photoQuery)) ? $photo['image_path'] : '';
+
+
+                $priceQuery = mysqli_query($conn, "
+                SELECT price FROM product_prices_1 
+                WHERE product_id = $product_id AND material = '$material'
+                LIMIT 1
+            ");
+            $prices[$material] = ($priceRow = mysqli_fetch_assoc($priceQuery)) ? $priceRow['price'] : '';
             }
         ?>
         <div class="swiper-slide">
@@ -207,6 +215,11 @@ include('conn.php');
                         <?php endif; ?>
                     </a>
                 </div>
+                
+                <div class="product-price" id="price-<?= $product_id ?>" 
+                    style="font-size:18px; font-weight:bold; color:#d4af37; margin-top:10px;">
+                    ₹<?= htmlspecialchars($prices['Gold']) ?>
+                </div>
                 <div class="card-product-info" data-direction="horizontal">
                     <a href="product-detail.php?id=<?= $product_id ?>" class="title link">
                         <?= htmlspecialchars($product_name) ?>
@@ -227,6 +240,7 @@ include('conn.php');
                         <?php endforeach; ?>
                     </ul>
                 </div>
+                
             </div>
         </div>
         <?php } ?>
@@ -361,7 +375,7 @@ include('conn.php');
                 <div class="container">
                     <a href="Allurs.php" class="card-box">
                         <h3 class="subheading font-poppins fw-7"></h3>
-                        <h3 class="heading font-poppins fw-8">Allurs's Collection</h3>
+                        <h3 class="heading font-poppins fw-8">Allure's Collection</h3>
                         <p class="text">Lounge in style with </p>
                         <div class="wow fadeInUp" data-wow-delay="0s">
                             <button class="font-poppins fw-7 tf-btn style-2 btn-fill rounded-0 animate-hover-btn"><span>SHOP
@@ -414,12 +428,19 @@ include('conn.php');
                 ");
 
                 $images[$material] = ($photo = mysqli_fetch_assoc($photoQuery)) ? $photo['image_path'] : '';
+                
+                $priceQuery = mysqli_query($conn, "
+                SELECT price FROM product_prices_1 
+                WHERE product_id = $product_id AND material = '$material'
+                LIMIT 1
+            ");
+            $prices[$material] = ($priceRow = mysqli_fetch_assoc($priceQuery)) ? $priceRow['price'] : '';
             }
         ?>
                             <div class="swiper-slide">
                                 <div class="card-product style-brown">
                                     <div class="card-product-wrapper rounded-0">
-                                        <a href="product-detail.php?id=<?= $product_id ?>" class="product-img">
+                                        <a href="try_3.php?product_id=<?= $product_id ?>" class="product-img">
                                             <?php if (!empty($images['Gold'])): ?>
                                                 <img class="lazyload img-product"
                                                     data-src="<?= htmlspecialchars($images['Gold']) ?>"
@@ -435,8 +456,9 @@ include('conn.php');
                                             <?php endif; ?>
                                         </a>
                                     </div>
+                                    
                                     <div class="card-product-info" data-direction="horizontal">
-                                        <a href="product-detail.php?id=<?= $product_id ?>" class="title link">
+                                        <a href="try_3.php?product_id=<?= $product_id ?>" class="title link">
                                             <?= htmlspecialchars($product_name) ?>
                                            
                                         </a>
@@ -478,7 +500,7 @@ include('conn.php');
         <section class="flat-spacing-23 bg_brown-4">
             <div class="container-full">
                 <div class="flat-title wow fadeInUp" data-wow-delay="0s">
-                    <span class="title fw-8 font-poppins fs-28">LOVE NOTES AN Allurs</span>
+                    <span class="title fw-8 font-poppins fs-28">LOVE NOTES AN Allure's</span>
                     <p class="sub-title font-poppins fs-14 text_black-2">Where wishlists come true. Discover the pieces
                         of their (or your) dreams.</p>
                 </div>
@@ -694,48 +716,42 @@ include('conn.php');
                         <a href="#dropdown-menu-one" class="collapsed mb-menu-link current" data-bs-toggle="collapse"
                             aria-expanded="true" aria-controls="dropdown-menu-one">
                             <a href="index.php"><span >Home</span></a>
+                             
+                        </a>
+
+                    </li>
+                    
+                    
+                    <li class="nav-mb-item">
+                        <a href="#dropdown-menu-four" class="collapsed mb-menu-link current" data-bs-toggle="collapse"
+                            aria-expanded="true" aria-controls="dropdown-menu-four">
+                            <a href="Rings.php">Rings</a>
                             
                         </a>
-
-                    </li>
-                    
-                    
-                    <li class="nav-mb-item">
-                        <a href="#dropdown-menu-four" class="collapsed mb-menu-link current" data-bs-toggle="collapse"
-                            aria-expanded="true" aria-controls="dropdown-menu-four">
-                            <span>Rings</span>
-                            <span class="btn-open-sub"></span>
-                        </a>
-                        <div id="dropdown-menu-four" class="collapse">
-                            <ul class="sub-nav-menu" id="sub-menu-navigation2">
-                                <li><a href="about-us.html" class="sub-nav-link">About us</a></li>
-                                <li><a href="brands.html" class="sub-nav-link line-clamp">Brands<div class="demo-label">
-                                            <span class="demo-new">New</span>
-                                        </div></a></li>
-                                <li><a href="brands-v2.html" class="sub-nav-link">Brands V2</a></li>
-                            </ul>
-                        </div>
-
+                        
                     </li>
 
                     <li class="nav-mb-item">
                         <a href="#dropdown-menu-four" class="collapsed mb-menu-link current" data-bs-toggle="collapse"
                             aria-expanded="true" aria-controls="dropdown-menu-four">
-                            <span>Necklace</span>
+                            <a href="Necklace.php">Necklace</a>
+                            
                         </a>
                     </li>
 
                     <li class="nav-mb-item">
                         <a href="#dropdown-menu-four" class="collapsed mb-menu-link current" data-bs-toggle="collapse"
                             aria-expanded="true" aria-controls="dropdown-menu-four">
-                            <span>Bracelets</span>
+                            <a href="Bracelets.php">Bracelets</a>
+                            
                         </a>
                     </li>
 
                     <li class="nav-mb-item">
                         <a href="#dropdown-menu-four" class="collapsed mb-menu-link current" data-bs-toggle="collapse"
                             aria-expanded="true" aria-controls="dropdown-menu-four">
-                            <span>Allur's collection</span>
+                            <a href="Allur.php">Allure's collection</a>
+                            
                         </a>
                     </li>
 
@@ -753,8 +769,8 @@ include('conn.php');
                         <a href="contact-1.html" class="text-need">Need help ?</a>
                     </div>
                     <ul class="mb-info">
-                        <li>Address: 1234 Fashion Street, Suite 567, <br> New York, NY 10001</li>
-                        <li>Email: <b>sales@allurs.com </b></li>
+                        <li>Address: 1234 Fashion Street, Suite 567, <br> </li>
+                        <li>Email: <b>sales@allures.com </b></li>
                         <li>Phone: <b>+91 9737847522</b></li>
                     </ul>
                 </div>
