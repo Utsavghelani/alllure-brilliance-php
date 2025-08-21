@@ -1,21 +1,11 @@
 <?php
-// $conn = new mysqli('localhost', 'root', '', 'allure');
-// if ($conn->connect_error) {
-//     die("Connection failed: " . $conn->connect_error);
-// }
+// Create connection
+$conn = new mysqli('localhost', 'allure', 'Allure@2025)*', 'allure_db');
 
-
-// $conn = new mysqli('sql12.freesqldatabase.com', 'sql12793279', 'SaTNhp1yGw', 'sql12793279');
-// if ($conn->connect_error) {
-//     die("Connection failed: " . $conn->connect_error);
-// }
-
-$conn = new mysqli('localhost','allure','Allure@2025)*','allure_db');
+// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
+} else {
+    echo "Connected successfully!";
 }
-
 ?>
-
-
-  
