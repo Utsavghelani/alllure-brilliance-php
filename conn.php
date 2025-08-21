@@ -10,7 +10,7 @@
 //     die("Connection failed: " . $conn->connect_error);
 // }
 
-$conn = new mysqli("localhost","greenlyfegrow","Radhe@2812","greenlyfe");
+$conn = new mysqli('localhost','allure','Allure@2025)*','allure_db');
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
