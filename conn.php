@@ -1,11 +1,13 @@
 <?php
-// Create connection
-$conn = new mysqli('localhost', 'allure', 'Allure@2025)*', 'allure_db');
+$servername = "168.138.113.119";   // or 127.0.0.1
+$username   = "AllUre";
+$password   = "AllUreAdmin2025";
+$dbname     = "allure_db";
 
-// Check connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
-} else {
-    echo "Connected successfully!";
 }
+echo "✅ Connected successfully";
 ?>
